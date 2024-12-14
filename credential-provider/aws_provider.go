@@ -78,6 +78,6 @@ func (p AwsProvider) GetCredentialWithName(key string) (string, error) {
 	return *result.SecretString, nil
 }
 
-func (p AwsProvider) Shutdown() {
-
+func (p AwsProvider) Close() error {
+	return nil
 }

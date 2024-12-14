@@ -3,7 +3,7 @@ package condition
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGetArguments(t *testing.T) {
@@ -23,12 +23,12 @@ func TestGetArguments(t *testing.T) {
 	for _, c := range cases {
 		result, err := getArguments(c.argString, c.expectedCount)
 		if c.expectsError {
-			assert.Error(t, err)
+			require.Error(t, err)
 		} else {
-			assert.NoError(t, err)
-			assert.Equal(t, len(c.expected), len(result))
+			require.NoError(t, err)
+			require.Equal(t, len(c.expected), len(result))
 			for i := range c.expected {
-				assert.Equal(t, c.expected[i], result[i])
+				require.Equal(t, c.expected[i], result[i])
 			}
 		}
 	}
@@ -60,12 +60,12 @@ func TestNewCondition(t *testing.T) {
 	for _, c := range cases {
 		condition, err := NewCondition(c.conditionString)
 		if c.expectError {
-			assert.Error(t, err)
+			require.Error(t, err)
 		} else {
-			assert.NoError(t, err)
-			assert.Equal(t, c.expectedType, condition.Type)
-			assert.Equal(t, c.expectedType.expectedArgsCount(), uint(len(condition.Args)))
-			assert.Equal(t, c.expectedArgs, condition.Args)
+			require.NoError(t, err)
+			require.Equal(t, c.expectedType, condition.Type)
+			require.Equal(t, c.expectedType.expectedArgsCount(), uint(len(condition.Args)))
+			require.Equal(t, c.expectedArgs, condition.Args)
 		}
 	}
 }
@@ -90,16 +90,16 @@ func TestApplyCondition(t *testing.T) {
 	for _, c := range cases {
 		condition, err := NewCondition(c.conditionString)
 		if c.expectError {
-			assert.Error(t, err)
+			require.Error(t, err)
 		} else {
-			assert.NoError(t, err)
+			require.NoError(t, err)
 		}
 
 		for _, successTest := range c.successInputs {
-			assert.True(t, condition.ApplyCondition(successTest))
+			require.True(t, condition.ApplyCondition(successTest))
 		}
 		for _, failTest := range c.failInputs {
-			assert.False(t, condition.ApplyCondition(failTest))
+			require.False(t, condition.ApplyCondition(failTest))
 		}
 	}
 }

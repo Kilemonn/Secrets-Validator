@@ -43,6 +43,7 @@ func (p EnvironmentProvider) GetCredentialWithName(key string) (string, error) {
 	return val, nil
 }
 
-func (p EnvironmentProvider) Shutdown() {
+func (p EnvironmentProvider) Close() error {
 	// No-op
+	return nil
 }

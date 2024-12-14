@@ -85,8 +85,9 @@ func (p GcpProvider) GetCredentialWithName(key string) (string, error) {
 	return string(result.Payload.Data), nil
 }
 
-func (p GcpProvider) Shutdown() {
-	if err := p.client.Close(); err != nil {
+func (p GcpProvider) Close() (err error) {
+	if err = p.client.Close(); err != nil {
 		fmt.Printf("Failed to close GCP provider with error: [%s].\n", err.Error())
 	}
+	return err
 }
