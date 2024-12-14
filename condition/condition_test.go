@@ -73,18 +73,24 @@ func TestNewCondition(t *testing.T) {
 func TestApplyCondition(t *testing.T) {
 	var cases = []struct {
 		conditionString string
+		id              string
 		expectError     bool
 		successInputs   []string
 		failInputs      []string
 	}{
-		{"IsNumeric", false, []string{"-19", "40", "9999999999999"}, []string{"wow", "-", "!@!#$!"}},
-		{"IsBoolean", false, []string{"true", "false"}, []string{"yes", "-", "222159", "!@!#$!"}},
-		{"Unique", false, []string{"unique1", "unique2", "unique3"}, []string{"unique1", "unique2", "unique3"}},
-		{"HasPrefix(test-)", false, []string{"test-scenario1", "test-case1", "test-please"}, []string{"not-test-", "ttest-failed"}},
-		{"HasSuffix(-test)", false, []string{"some-test", "another-test"}, []string{"not-test-", "failing-tests"}},
+		{"IsNumeric", "is-numeric", false, []string{"-19", "40", "9999999999999"}, []string{"wow", "-", "!@!#$!"}},
+		{"IsBoolean", "is-boolean", false, []string{"true", "false"}, []string{"yes", "-", "222159", "!@!#$!"}},
+		{"Unique", "is-unique1", false, []string{"unique1", "unique2", "unique3"}, []string{"unique1", "unique2", "unique3"}},
+
+		// Duplicate the unique entry with the same ID to make sure that the same unique instance is used
+		{"Unique", "is-unique1", false, []string{"unique4", "unique5", "unique6"}, []string{"unique1", "unique2", "unique3", "unique4", "unique5", "unique6"}},
+		// Using a different ID should give us a different validator and not collide with the other unique instances
+		{"Unique", "is-unique2", false, []string{"unique1", "unique2", "unique3"}, []string{"unique1", "unique2", "unique3"}},
+		{"HasPrefix(test-)", "has-prefix", false, []string{"test-scenario1", "test-case1", "test-please"}, []string{"not-test-", "ttest-failed"}},
+		{"HasSuffix(-test)", "has-suffix", false, []string{"some-test", "another-test"}, []string{"not-test-", "failing-tests"}},
 
 		// Make sure an invalid constraint is forced to validate false to everything
-		{"SomethingInvalid(arg1, arg2)", true, []string{}, []string{"test test test", "1237532123", "true", "$!&@#($)"}},
+		{"SomethingInvalid(arg1, arg2)", "invalid", true, []string{}, []string{"test test test", "1237532123", "true", "$!&@#($)"}},
 	}
 
 	for _, c := range cases {
@@ -96,10 +102,10 @@ func TestApplyCondition(t *testing.T) {
 		}
 
 		for _, successTest := range c.successInputs {
-			require.True(t, condition.ApplyCondition(successTest))
+			require.True(t, condition.ApplyCondition(c.id, successTest))
 		}
 		for _, failTest := range c.failInputs {
-			require.False(t, condition.ApplyCondition(failTest))
+			require.False(t, condition.ApplyCondition(c.id, failTest))
 		}
 	}
 }

@@ -27,7 +27,7 @@ func ExecuteConstraintsAgainstProviders(providers []credential_provider.Credenti
 					if debugLog {
 						fmt.Printf("Credential [%s] matched pattern for constraint [%s], applying condition...\n", credentialName, constraint.Name)
 					}
-					if !constraint.Condition.ApplyCondition(credential) {
+					if !constraint.Condition.ApplyCondition(constraint.Name, credential) {
 						if debugLog {
 							fmt.Printf("Fail - Provider [%s], Constraint [%s], Credential [%s].\n", provider.Identifier.String(), constraint.Name, credentialName)
 						}
