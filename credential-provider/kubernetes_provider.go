@@ -70,6 +70,7 @@ func (p KubernetesProvider) GetCredentialWithName(key string) (string, error) {
 	return string(secret.Data[key]), nil
 }
 
-func (p KubernetesProvider) Shutdown() {
+func (p KubernetesProvider) Close() error {
 	// No-op
+	return nil
 }

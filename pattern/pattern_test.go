@@ -3,7 +3,7 @@ package pattern
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestPatternMatches(t *testing.T) {
@@ -21,14 +21,14 @@ func TestPatternMatches(t *testing.T) {
 	for _, c := range cases {
 		pattern, err := NewPattern(c.regex)
 		if c.expectsError {
-			assert.Error(t, err)
+			require.Error(t, err)
 		} else {
-			assert.NoError(t, err)
+			require.NoError(t, err)
 			for _, test := range c.successTests {
-				assert.True(t, pattern.Matches(test))
+				require.True(t, pattern.Matches(test))
 			}
 			for _, test := range c.failTests {
-				assert.False(t, pattern.Matches(test))
+				require.False(t, pattern.Matches(test))
 			}
 		}
 	}

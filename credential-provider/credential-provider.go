@@ -99,5 +99,5 @@ func NewCredentialProvider(id CredentialProviderIdentifier, properties map[strin
 type Provider interface {
 	GetCredentialNames() ([]string, error)
 	GetCredentialWithName(string) (string, error)
-	Shutdown()
+	Close() error
 }

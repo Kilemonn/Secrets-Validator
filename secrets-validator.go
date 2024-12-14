@@ -39,6 +39,6 @@ func main() {
 	}
 
 	for _, provider := range providers {
-		provider.Provider.Shutdown()
+		provider.Provider.Close()
 	}
 }
