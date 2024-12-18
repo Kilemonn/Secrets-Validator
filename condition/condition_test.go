@@ -91,6 +91,9 @@ func TestApplyCondition(t *testing.T) {
 
 		// Make sure an invalid constraint is forced to validate false to everything
 		{"SomethingInvalid(arg1, arg2)", "invalid", true, []string{}, []string{"test test test", "1237532123", "true", "$!&@#($)"}},
+
+		{"Matches(\\d+)", "matches-regex", false, []string{"1234", "1", "testwith number 1"}, []string{"test", "no numbers++--"}},
+		{"Matches([)", "invalid-regex", false, []string{"test"}, []string{"?"}},
 	}
 
 	for _, c := range cases {
@@ -102,10 +105,10 @@ func TestApplyCondition(t *testing.T) {
 		}
 
 		for _, successTest := range c.successInputs {
-			require.True(t, condition.ApplyCondition(c.id, successTest))
+			require.True(t, condition.ApplyCondition(c.id, successTest), c.id+" - "+successTest)
 		}
 		for _, failTest := range c.failInputs {
-			require.False(t, condition.ApplyCondition(c.id, failTest))
+			require.False(t, condition.ApplyCondition(c.id, failTest), c.id+" - "+failTest)
 		}
 	}
 }

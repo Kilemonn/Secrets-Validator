@@ -16,6 +16,7 @@ const (
 	ConditionTypeHasSuffix ConditionType = iota
 	ConditionTypeIsNumeric ConditionType = iota
 	ConditionTypeIsBoolean ConditionType = iota
+	ConditionTypeMatches   ConditionType = iota
 )
 
 func ConditionTypeFromString(input string) ConditionType {
@@ -28,7 +29,7 @@ func ConditionTypeFromString(input string) ConditionType {
 }
 
 func conditionTypeStrings() []string {
-	return []string{"invalid", "unique", "hasprefix", "hassuffix", "isnumeric", "isboolean"}
+	return []string{"invalid", "unique", "hasprefix", "hassuffix", "isnumeric", "isboolean", "matches"}
 }
 
 func (c ConditionType) IsValid() bool {
@@ -36,11 +37,11 @@ func (c ConditionType) IsValid() bool {
 }
 
 func (c ConditionType) expectedArgsCount() uint {
-	args := []uint{0, 0, 1, 1, 0, 0}
+	args := []uint{0, 0, 1, 1, 0, 0, 1}
 	return args[uint(c)]
 }
 
-func (c ConditionType) conditionActions(id string) []condition_action.ConditionAction {
+func (c ConditionType) conditionActions(id string, pattern string) []condition_action.ConditionAction {
 	return []condition_action.ConditionAction{
 		condition_action.InvalidConditionAction{},
 		condition_action.GetUniqueInstance(id),
@@ -48,9 +49,10 @@ func (c ConditionType) conditionActions(id string) []condition_action.ConditionA
 		condition_action.HasSuffixConditionAction{},
 		condition_action.IsNumericConditionAction{},
 		condition_action.IsBooleanConditionAction{},
+		condition_action.GetMatchesInstance(id, pattern),
 	}
 }
 
-func (c ConditionType) getConditionAction(id string) condition_action.ConditionAction {
-	return c.conditionActions(id)[uint(c)]
+func (c ConditionType) getConditionAction(id string, pattern string) condition_action.ConditionAction {
+	return c.conditionActions(id, pattern)[uint(c)]
 }

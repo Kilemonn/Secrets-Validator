@@ -64,5 +64,11 @@ func getArguments(arg string, expectedArgsCount uint) (args []string, err error)
 }
 
 func (c Condition) ApplyCondition(id string, input string) bool {
-	return c.Type.getConditionAction(id).CheckCondition(input, c.Args)
+	// TODO: Make this nicer, we are only passing in this arg for the matches condition so that we only need to compile
+	// the regex once on initialisation
+	arg := ""
+	if len(c.Args) > 0 {
+		arg = c.Args[0]
+	}
+	return c.Type.getConditionAction(id, arg).CheckCondition(input, c.Args)
 }
