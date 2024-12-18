@@ -42,6 +42,9 @@ constraints:
     - all-properties-are-unqiue:
         pattern: ALL
         condition: Unique
+    - is-email: # Checks any property/secret that contains "email address" and matches the following regex
+        pattern: *.email-address*.
+        condition: Matches(.+@\..+)
 ```
 
 The above configuration defines the "environment" as the only credential provider.
@@ -59,6 +62,7 @@ The constraints that are supported are:
 - **HasSuffix(\<suffix-string\>)** - Check it has the supplied suffix.
 - **IsNumber** - Check value is numeric.
 - **IsBoolean** - Check value is a boolean.
+- **Matches(<regex-pattern>)** - Check that the value matches the provided regex.
 
 ## Further Documentation in the Wiki
 
