@@ -63,6 +63,6 @@ func getArguments(arg string, expectedArgsCount uint) (args []string, err error)
 	return
 }
 
-func (c Condition) ApplyCondition(input string) bool {
-	return c.Type.getConditionAction().CheckCondition(input, c.Args)
+func (c Condition) ApplyCondition(id string, input string) bool {
+	return c.Type.getConditionAction(id).CheckCondition(input, c.Args)
 }

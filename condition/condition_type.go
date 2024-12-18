@@ -40,10 +40,10 @@ func (c ConditionType) expectedArgsCount() uint {
 	return args[uint(c)]
 }
 
-func (c ConditionType) conditionActions() []condition_action.ConditionAction {
+func (c ConditionType) conditionActions(id string) []condition_action.ConditionAction {
 	return []condition_action.ConditionAction{
 		condition_action.InvalidConditionAction{},
-		condition_action.UniqueConditionActionObj,
+		condition_action.GetUniqueInstance(id),
 		condition_action.HasPrefixConditionAction{},
 		condition_action.HasSuffixConditionAction{},
 		condition_action.IsNumericConditionAction{},
@@ -51,6 +51,6 @@ func (c ConditionType) conditionActions() []condition_action.ConditionAction {
 	}
 }
 
-func (c ConditionType) getConditionAction() condition_action.ConditionAction {
-	return c.conditionActions()[uint(c)]
+func (c ConditionType) getConditionAction(id string) condition_action.ConditionAction {
+	return c.conditionActions(id)[uint(c)]
 }
