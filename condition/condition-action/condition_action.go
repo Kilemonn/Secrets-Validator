@@ -1,10 +1,14 @@
 package condition_action
 
 var (
-	// TODO: Create a new instance for each different constraint definition that uses Unique
-	// Need to create and hold this variable, since it's state needs to be retained
 	uniqueActionsMap map[string]UniqueConditionAction = make(map[string]UniqueConditionAction)
+
+	matchesActionsMap map[string]MatchesConditionAction = make(map[string]MatchesConditionAction)
 )
+
+type ConditionAction interface {
+	CheckCondition(input string, args []string) bool
+}
 
 func GetUniqueInstance(id string) UniqueConditionAction {
 	if entry, exists := uniqueActionsMap[id]; exists {
@@ -16,6 +20,12 @@ func GetUniqueInstance(id string) UniqueConditionAction {
 	}
 }
 
-type ConditionAction interface {
-	CheckCondition(input string, args []string) bool
+func GetMatchesInstance(id string, pattern string) MatchesConditionAction {
+	if entry, exists := matchesActionsMap[id]; exists {
+		return entry
+	} else {
+		matchesAction := NewMatchesConditionAction(id, pattern)
+		matchesActionsMap[id] = matchesAction
+		return matchesAction
+	}
 }
