@@ -93,7 +93,7 @@ func TestApplyCondition(t *testing.T) {
 		{"SomethingInvalid(arg1, arg2)", "invalid", true, []string{}, []string{"test test test", "1237532123", "true", "$!&@#($)"}},
 
 		{"Matches(\\d+)", "matches-regex", false, []string{"1234", "1", "testwith number 1"}, []string{"test", "no numbers++--"}},
-		{"Matches([)", "invalid-regex", false, []string{"test"}, []string{"?"}},
+		{"Matches([)", "invalid-regex", false, []string{}, []string{"everything should fail"}},
 	}
 
 	for _, c := range cases {

@@ -24,7 +24,7 @@ func GetMatchesInstance(id string, pattern string) MatchesConditionAction {
 	if entry, exists := matchesActionsMap[id]; exists {
 		return entry
 	} else {
-		matchesAction := NewMatchesConditionAction(pattern)
+		matchesAction := NewMatchesConditionAction(id, pattern)
 		matchesActionsMap[id] = matchesAction
 		return matchesAction
 	}
