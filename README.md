@@ -1,5 +1,7 @@
 # Secrets-Validator
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/Kilemonn/Secrets-Validator)](https://goreportcard.com/report/github.com/Kilemonn/Secrets-Validator)
+
 ## Overview
 
 An commandline application that is used to verify the value/format of your stored secrets across multiple managers.
